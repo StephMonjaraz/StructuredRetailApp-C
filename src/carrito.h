@@ -10,7 +10,4 @@ void mostrarCarrito(const Usuario* usuario);
 // Función para calcular el total a pagar
 void actualizarTotal(Usuario* usuario);
 
-// Función para liberar la memoria del carrito
-void liberarCarrito(Usuario* usuario);
-
 #endif
