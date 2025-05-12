@@ -1,7 +1,7 @@
 #ifndef USUARIO_H
 #define USUARIO_H
 
-#include "producto.h"  // apuntador a Producto
+#include "producto.h"  // para el apuntador a Producto
 
 typedef struct Usuario {
     char nombre[100];
