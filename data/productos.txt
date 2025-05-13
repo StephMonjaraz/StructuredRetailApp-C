@@ -1,3 +1,3 @@
-Manzana 12.5
-Pan 8.0
-Leche 19.3
+Walkman 49.99 20 Electrónica Sony 3.0 Portátil_y_reproductor_de_casetes Reproductor_de_casetes_portátil
+Commodore64 199.99 15 Computadora Commodore 120.0 Computadora_personal_de_8_bits Computadora_clásica_de_los_80s
+GameBoy 89.99 30 Electrónica Nintendo 4.5 Consola_portátil_de_videojuegos Consola_portátil_clásica
