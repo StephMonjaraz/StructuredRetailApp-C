@@ -9,4 +9,6 @@ typedef struct Producto {
 
 Producto* cargarProductosDesdeArchivo(const char* nombreArchivo);
 
+void mostrarListaProductos(Producto* lista);
+
 #endif

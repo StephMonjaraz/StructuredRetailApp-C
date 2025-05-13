@@ -52,7 +52,7 @@ void mostrarListaProductos(Producto* lista) {
     }
 }
 
-//prueba
+/*prueba
 int main() {
     Producto* lista = cargarProductosDesdeArchivo("../data/productos.txt");
 
@@ -76,3 +76,4 @@ int main() {
 
     return 0;
 }
+*/

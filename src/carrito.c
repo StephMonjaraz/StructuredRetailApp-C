@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "carrito.h"
 #include "producto.h"
 #include "usuario.h"
@@ -32,4 +33,25 @@ void actualizarTotal(Usuario* usuario) {
     }
 
     usuario->totalPagar = total;
+}
+
+// Agregar un producto al carrito
+void agregarProductoAlCarrito(Usuario* usuario, Producto* producto) {
+    Producto* nuevo = (Producto*)malloc(sizeof(Producto));
+    strcpy(nuevo->nombre, producto->nombre);
+    nuevo->costo = producto->costo;
+    nuevo->siguiente = NULL;
+
+    if (usuario->carrito == NULL) {
+        usuario->carrito = nuevo;
+    } else {
+        Producto* temp = usuario->carrito;
+        while (temp->siguiente != NULL) {
+            temp = temp->siguiente;
+        }
+        temp->siguiente = nuevo;
+    }
+
+    // Actualizar el total
+    actualizarTotal(usuario);
 }
