@@ -11,11 +11,11 @@ typedef struct Producto { // estructura para lss productos.
 } Producto;
 
 
-// Tipo de retorno -> Producto* (puntero a la estructura Producto)
+// Tipo de retorno -> Producto* (apuntador a la estructura Producto)
 // nombre de la funcion -> cargarProductosDesdeArchivo
 /*argumentos (lo que recibiremos en la funcion) -> const char* nombreArchivo -> const ya que solo lee el nombre del archivo
 * y no lo modifica.
-* recibiremos un puntero a un char (una cadena de caracteres) que 
+* recibiremos un apuntador a un char (una cadena de caracteres) que 
 * es el nombre del archivo.  Lo llamamos productos.txt y esta en la carpeta data
 */
 // 1.- Acceder al archivo y cargar los productos
@@ -25,7 +25,7 @@ Producto* cargarProductosDesdeArchivo(const char* nombreArchivo);
 /*
 * 2.- Mostrar un producto
 * La función no devuelve ningún valor, ya que su único propósito es mostrar los datos del producto en pantalla.
-* Como argumento, recibirá un parámetro "actual" que contiene un puntero a la estructura Producto,
+* Como argumento, recibirá un parámetro "actual" que es un apuntador a la estructura Producto,
 * el cual representa el producto que queremos mostrar.
 */
 void mostrarProductoActual(Producto* actual);
@@ -35,7 +35,7 @@ void mostrarProductoActual(Producto* actual);
 /*
 * 3.- avanza al siguiente producto -> Devuelve el siguiente producto de la lista. 
 * La función a la que llamamos avanzarProducto devolverá el apuntador a la estructura producto 
-* y tiene como parámetros "actual" que contiene un apuntador a la esctructura Producto.
+* y tiene como parámetros "actual" que es un apuntador a la esctructura Producto.
 */
 Producto* avanzarProducto(Producto* actual);
 
@@ -48,7 +48,12 @@ Producto* avanzarProducto(Producto* actual);
 */
 Producto* retrocederProducto(Producto* cabeza, Producto* actual);
 
-// Crea una copia del producto actual para agregar al carrito
+/*
+* 5.- Crear una copia del producto actual para agregar al carrito
+* La funcion a la que llamamos copiarProducto devuelve un apuntador a la estructura Producto
+* y tiene como parámetros "original" que es un apuntador a la estructura Producto.
+*/
+
 Producto* copiarProducto(Producto* original);
 
 

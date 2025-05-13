@@ -8,38 +8,6 @@ Producto* cargarProductosDesdeArchivo(const char* nombreArchivo);
 void mostrarProductoActual(Producto* actual);
 
 
-//prueba 2
-int main() {
-    // 1. Llamamos a la función cargarProductosDesdeArchivo con el nombre del archivo.
-    Producto* lista = cargarProductosDesdeArchivo("../data/productos.txt"); 
-
-    // 2. Verificamos si se cargaron los productos correctamente.
-    if (lista == NULL) {
-        printf("No se pudieron cargar los productos.\n");
-        return 1;  // Salir si no se cargaron productos.
-    }
-
-    // 3. Inicializamos 'actual' como el primer producto de la lista.
-    Producto* actual = lista;  // La cabeza de la lista es el primer producto
-
-    // 4. Mostramos el primer producto con la función mostrarProductoActual.
-    mostrarProductoActual(actual);  // Muestra el primer producto (cabeza de la lista)
-
-    // 5. Avanzamos al siguiente producto
-    printf("\nAvanzando al siguiente producto:\n");
-    actual = avanzarProducto(actual);  // Avanzamos al siguiente
-    mostrarProductoActual(actual);  // Muestra el siguiente
-
-    // 6. Retrocedemos al producto anterior
-    printf("\nRetrocediendo al producto anterior:\n");
-    actual = retrocederProducto(lista, actual);  // Retrocedemos al anterior
-    mostrarProductoActual(actual);  // Moestra el producto anterior
-
-    return 0;
-}
-
-
-
 
 // Función que nos permite cargar productos desde un archivo (implementada en src/producto.h)
 Producto* cargarProductosDesdeArchivo(const char* nombreArchivo) {
@@ -51,15 +19,15 @@ Producto* cargarProductosDesdeArchivo(const char* nombreArchivo) {
         return NULL;
     }
 
-    Producto* head = NULL; // puntero a la cabeza de la lista, lo inicializamos en NULL porque pensamos que la lista esta vacia
-    Producto* tail = NULL; // puntero a la cola de la lista, lo inicializamos en NULL
+    Producto* head = NULL; // apuntador a la cabeza de la lista, lo inicializamos en NULL porque pensamos que la lista esta vacia
+    Producto* tail = NULL; // apuntador a la cola de la lista, lo inicializamos en NULL
     // variables temporales para almacenar los datos que leemos  del archivo
     char nombre[100]; 
     float costo;
 
     /* para leer el archivo linea por linea -> fscanf
     * int fscanf(FILE *stream, const char *format, ...);
-    * stream -> puntero al archivo que queremos leer -> f
+    * stream -> apuntador al archivo que queremos leer -> f
     * format -> cadena de formato que indica el tipo de datos que queremos leer
     * La función 'fscanf' devuelve el número de elementos correctamente leídos. En este caso, esperamos que lea dos elementos:
     * 1. El nombre del producto (la cade de caracteres).
@@ -69,17 +37,17 @@ Producto* cargarProductosDesdeArchivo(const char* nombreArchivo) {
     * (por ejemplo, si llega al final del archivo o si los datos no tienen el formato esperado), el ciclo termina.
     */
     while (fscanf(f, "%s %f", nombre, &costo) == 2) { // mientras se puedan leer dos elementos
-        Producto* nuevo = (Producto*)malloc(sizeof(Producto)); // creamos un puntero llamado nuevo que almacena
+        Producto* nuevo = (Producto*)malloc(sizeof(Producto)); // creamos un apuntador llamado nuevo que almacena
         // la direccion de memoria de un objeto de tipo Producto, luego le asignamos memoria mediante malloc 
         /* 
  * Asignamos memoria dinámica para un nuevo nodo de tipo Producto.
  * 
  * - malloc(sizeof(Producto)) indica la cantidad de memoria para almacenar un objeto de tipo Producto.
  *   El tamaño de la memoria es en funcion der la cantidad de bytes que ocupa la estructura Producto.
- * - malloc devuelve un puntero genérico de tipo void* (puntero a cualquier tipo de dato). 
- *   Usamos (Producto*) para convertir el puntero genérico a un puntero específico de tipo Producto*.
+ * - malloc devuelve un apuntador genérico de tipo void* (apuntador a cualquier tipo de dato). 
+ *   Usamos (Producto*) para convertir el apuntador genérico a un apuntador específico de tipo Producto*.
  *
- * - Producto* nuevo: Declara un puntero a Producto llamado 'nuevo', que almacenará la dirección de memoria
+ * - Producto* nuevo: Declara un apuntador a Producto llamado 'nuevo', que almacenará la dirección de memoria
  *   recién asignada para el nuevo nodo.
  *   
  * Esto es necesario porque estamos trabajando con una lista enlazada y necesitamos almacenar
@@ -94,7 +62,7 @@ Producto* cargarProductosDesdeArchivo(const char* nombreArchivo) {
 
         strcpy(nuevo->nombre, nombre);  // copaimos el nombre del producto (de la variable temporal nombre) a la estructura Producto
         nuevo->costo = costo; // asignamos el costo del producto (de la variable temporal costo) a la estructura Producto
-        nuevo->siguiente = NULL; // inicializamos el puntero siguiente en NULL porque no sabemos si esta vacia.
+        nuevo->siguiente = NULL; // inicializamos el apuntador siguiente en NULL porque no sabemos si esta vacia.
 
         /*
         PAra enlazar el nuevo nodo a la lista:
@@ -132,27 +100,29 @@ void mostrarProductoActual(Producto* actual) {
 
 // 3.- Avanzar al siguiente producto
 Producto* avanzarProducto(Producto* actual) {
-    if (actual == NULL || actual->siguiente == NULL) { // si la lista esta vacia  o si no esta vacía
-                                                       // pero el  el apuntador sigiente apunta a NULL.
-        printf("No hay más productos.\n"); // le indicamos al usuairio que ya no hay mas productos.
-        return NULL;  // No hay más productos
-    } // si NO esta vacía:
-    return actual->siguiente;  /*
-                              * regresa el apuntador que ahora apunta al siguiente producto
-                              * actual->siguiente obtiene el valor de siguiente, que es el apuntador al siguiente nodo en la lista.
-                              * Entonces, return actual->siguiente devuelve la dirección de memoria del siguiente nodo
-                              */
+    if (actual == NULL) {// si la lista esta vacia  
+        printf("Error: El producto actual es NULL.\n");
+        return actual; // No cambia el apuntador si es NULL
+    }
+    if (actual->siguiente == NULL) { // Si no esta vacia pero no hay más productos
+        printf("No hay más productos.\n");
+        return actual; // Mantenemos el apuntador en el último producto
+    }
+    return actual->siguiente; // Avanzar al siguiente producto
 }
 
 
 // 4.- Retroceder al producto anterior.
 Producto* retrocederProducto(Producto* cabeza, Producto* actual) {
-    if (actual == cabeza || actual == NULL) { /* si estamos en el primer nodo de la lista enlazada
-                                              * o si la lista esta vacía
-                                             */ 
-        printf("No hay producto anterior.\n"); // indicamos al usuario que no hay producto anterior.
-        return NULL;  // No hay producto anterior
+    if (actual == NULL) { // si la lista esta vacia
+        printf("Error: El producto actual es NULL.\n");
+        return actual; // No cambiamos el apuntador si es NULL
     }
+    if (actual == cabeza) { //si estamos en el primer producto
+        printf("No hay producto anterior.\n");
+        return actual; // Mantenemos el apuntador en el primer producto
+    }
+
     // Si no estamos al inicio de la lista y la lista no está vacía, procedemos a encontrar el nodo anterior.
     Producto* temp = cabeza; // Asignamos la dirección de 'cabeza' a 'temp', el cual recorrerá la lista
     // Mientras 'temp' no sea NULL y 'temp->siguiente' no sea igual a 'actual',
@@ -164,6 +134,28 @@ Producto* retrocederProducto(Producto* cabeza, Producto* actual) {
     return temp;  // Devolvemos el nodo anterior al producto actual
 }
 
+
+// 5.- Copiar el producto actual para agregar al carrito
+Producto* copiarProducto(Producto* original) {
+    // Verificamos si el producto original es válido
+    if (original == NULL) { // si el producto original es NULL
+        return NULL;  // Si es NULL, no hay nada que copiar
+    }
+
+    // Reservamos memoria para un nuevo nodo de producto mediante malloc
+    Producto* nuevo = (Producto*)malloc(sizeof(Producto));
+    if (nuevo == NULL) { // si no se pudo reservar memoria
+        printf("Error de memoria al copiar el producto.\n");
+        return NULL;  //regresamos NULL
+    }
+
+    // Copiamos el nombre y costo del producto original
+    strcpy(nuevo->nombre, original->nombre);
+    nuevo->costo = original->costo;
+    nuevo->siguiente = NULL;  // El nuevo producto no tiene siguiente (será el último del carrito)
+
+    return nuevo;
+}
 
 
 
