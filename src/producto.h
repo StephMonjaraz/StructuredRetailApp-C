@@ -1,14 +1,19 @@
 #ifndef PRODUCTO_H
 #define PRODUCTO_H
 
-typedef struct Producto { // estructura para lss productos.
-    // nodo que contiene los datos (nombre y costo) más un apuntador al nodo siguiente
-    // de la lista enlazada. 
-    char nombre[100];
-    float costo;
-    struct Producto* siguiente; // declaramos un apuntador para poder trabajar con la lista
-    // enlazada. En este caso, el apuntador siguiente conecta este nodo con el siguiente nodo de la lista.
+typedef struct Producto {
+    char nombre[100];          // Nombre del producto
+    float costo;               // Precio del producto
+    char descripcion[200];     // Descripción breve del producto
+    int cantidad;              // Cantidad disponible en el inventario
+    char categoria[50];        // Categoría del producto (ej. "Computadora")
+    char marca[50];            // Marca del producto (ej. "Apple")
+    float voltaje;             // Voltaje del producto (si aplica, ej. "220V")
+    char caracteristicas[200]; // Características adicionales del producto
+    struct Producto* siguiente; // Apuntador al siguiente producto
 } Producto;
+
+// Funciones declaradas
 
 
 // Tipo de retorno -> Producto* (apuntador a la estructura Producto)
@@ -55,7 +60,6 @@ Producto* retrocederProducto(Producto* cabeza, Producto* actual);
 */
 
 Producto* copiarProducto(Producto* original);
-
 
 
 #endif

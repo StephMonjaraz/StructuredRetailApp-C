@@ -3,6 +3,6 @@
 *.out
 *.exe
 
-# Ignorar el ejecutable generado
+# Tiendita
 tiendita
-
+producto

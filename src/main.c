@@ -1,12 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "usuario.h"
+#include <string.h>
 #include "producto.h"
+#include "usuario.h"
 #include "carrito.h"
 
+// Función para mostrar el menú principal
 void mostrarMenu() {
     printf("\n=== MENÚ PRINCIPAL ===\n");
-    printf("1. Ver lista de productos\n");
+    printf("1. Navegar por la lista de productos\n");
     printf("2. Ver información del usuario\n");
     printf("3. Ver carrito de compras\n");
     printf("4. Salir\n");
@@ -22,69 +24,91 @@ int main() {
         .carrito = NULL  // carrito vacío inicialmente
     };
 
-    // Cargar productos desde archivo
+    // Cargar productos desde el archivo
     Producto* listaProductos = cargarProductosDesdeArchivo("../data/productos.txt");
     if (listaProductos == NULL) {
-        printf("No se cargaron productos.\n");
+        printf("No se pudieron cargar los productos.\n");
         return 1;
     }
 
+    Producto* actual = listaProductos; // Inicializamos 'actual' como el primer producto de la lista
     int opcion;
     Producto* actual = listaProductos;  // Empezamos desde el primer producto
     int seguir = 1;
-    int primeraEjecucion = 1;  // Bandera para mostrar el primer producto al inicio
 
     while (seguir) {
         mostrarMenu();
         scanf("%d", &opcion);
         switch (opcion) {
             case 1: {
-                // Mostrar lista de productos
-                printf("\n=== LISTA DE PRODUCTOS ===\n");
+                // Navegación interactiva por la lista de productos
+                char opcionNavegacion;
+                int primeraEjecucion = 1;
+                do {
+                    if (primeraEjecucion) {
+                        printf("Producto actual:\n");
+                        mostrarProductoActual(actual);
+                        primeraEjecucion = 0;
+                    }
 
-                // Si es la primera ejecución, mostramos el primer producto
-                if (primeraEjecucion) {
-                    mostrarProductoActual(actual);
-                    primeraEjecucion = 0; // Desactivamos la bandera
-                }
+                    printf("\nSeleccione una opción para navegar por la lista de productos:\n");
+                    printf("S - Avanzar al siguiente producto\n");
+                    printf("A - Retroceder al producto anterior\n");
+                    printf("C - Agregar producto al carrito\n");
+                    printf("Q - Salir de la navegación\n");
+                    printf("Ingrese su opción (S, A, C, Q): ");
 
-                // Navegación interactiva
-                printf("\nSeleccione una opción para navegar por la lista de productos:\n");
-                printf("S - Avanzar al siguiente producto\n");
-                printf("A - Retroceder al producto anterior\n");
-                printf("Q - Salir del programa\n");
-                printf("Ingrese su opción (S, A, Q): ");
+                    scanf(" %c", &opcionNavegacion);
 
-                char opcionNav;
-                scanf(" %c", &opcionNav);  // Leemos la opción del usuario
+                    switch (opcionNavegacion) {
+                        case 'S':
+                        case 's':
+                            if (actual->siguiente != NULL) {
+                                actual = avanzarProducto(actual);
+                                mostrarProductoActual(actual);
+                            } else {
+                                printf("No hay más productos. Estás en el último producto.\n");
+                            }
+                            break;
 
-                switch (opcionNav) {
-                    case 'S':  // Avanzar al siguiente producto
-                    case 's':
-                        actual = avanzarProducto(actual);  // Avanzamos al siguiente nodo
-                        if (actual != NULL) {
-                            mostrarProductoActual(actual);  // Muestra el siguiente nodo
+                        case 'A':
+                        case 'a':
+                            if (actual != listaProductos) {
+                                actual = retrocederProducto(listaProductos, actual);
+                                mostrarProductoActual(actual);
+                            } else {
+                                printf("No hay producto anterior. Estás en el primer producto.\n");
+                            }
+                            break;
+
+                        case 'C':
+                        case 'c': {
+                            int cantidad;
+                            printf("¿Cuántos de este producto deseas agregar al carrito? ");
+                            if (scanf("%d", &cantidad) != 1 || cantidad < 0) {
+                                printf("Cantidad inválida. Por favor ingresa un número entero positivo.\n");
+                                while (getchar() != '\n'); // Limpiar el buffer de entrada
+                            } else if (cantidad == 0) {
+                                printf("No se agregó el producto al carrito.\n");
+                            } else {
+                                Producto* productoCopia = copiarProducto(actual);
+                                productoCopia->cantidad = cantidad; // Asignar la cantidad deseada
+                                agregarProductoAlCarrito(&usuario1, productoCopia);
+                                printf("Se agregaron %d unidades de '%s' al carrito.\n", cantidad, actual->nombre);
+                            }
+                            break;
                         }
-                        break;
 
-                    case 'A':  // Retroceder al producto anterior
-                    case 'a':
-                        actual = retrocederProducto(listaProductos, actual);  // Retrocedemos al anterior
-                        if (actual != NULL) {
-                            mostrarProductoActual(actual);  // Mostramos el producto anterior
-                        }
-                        break;
+                        case 'Q':
+                        case 'q':
+                            printf("Saliendo de la navegación de productos...\n");
+                            break;
 
-                    case 'Q':  // Salir
-                    case 'q':
-                        seguir = 0;  // Salimos del programa
-                        printf("Saliendo del programa...\n");
-                        break;
-
-                    default:
-                        printf("Opción no válida. Por favor ingrese S, A o Q.\n");
-                        break;
-                }
+                        default:
+                            printf("Opción no válida. Por favor ingrese S, A, C o Q.\n");
+                            break;
+                    }
+                } while (opcionNavegacion != 'Q' && opcionNavegacion != 'q');
                 break;
             }
 
@@ -113,7 +137,7 @@ int main() {
         }
     }
 
-    // Liberar memoria de los productos
+    // Liberar memoria de la lista de productos
     Producto* temp;
     while (listaProductos != NULL) {
         temp = listaProductos;
@@ -121,6 +145,13 @@ int main() {
         free(temp);
     }
 
+    // Liberar memoria del carrito
+    Producto* tempCarrito;
+    while (usuario1.carrito != NULL) {
+        tempCarrito = usuario1.carrito;
+        usuario1.carrito = usuario1.carrito->siguiente;
+        free(tempCarrito);
+    }
+
     return 0;
 }
-
