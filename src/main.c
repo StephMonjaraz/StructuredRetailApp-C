@@ -16,6 +16,7 @@ void mostrarMenu() {
 }
 
 int main() {
+    // Crear un usuario vacío
     Usuario usuario1 = {
         .nombre = "Juan Pérez",
         .numeroCelular = "5512345678",
@@ -32,6 +33,7 @@ int main() {
 
     Producto* actual = listaProductos; // Inicializamos 'actual' como el primer producto de la lista
     int opcion;
+    Producto* actual = listaProductos;  // Empezamos desde el primer producto
     int seguir = 1;
 
     while (seguir) {
@@ -109,22 +111,26 @@ int main() {
                 } while (opcionNavegacion != 'Q' && opcionNavegacion != 'q');
                 break;
             }
+
             case 2: {
                 // Mostrar información del usuario
                 mostrarUsuario(&usuario1);
                 break;
             }
+
             case 3: {
                 // Mostrar carrito de compras
-                mostrarCarrito(&usuario1);
+                mostrarCarrito(&usuario1);  // Mostrar el carrito y el total
                 break;
             }
+
             case 4: {
                 // Salir
                 seguir = 0;
                 printf("Saliendo del programa...\n");
                 break;
             }
+
             default:
                 printf("Opción no válida. Intenta de nuevo.\n");
                 break;

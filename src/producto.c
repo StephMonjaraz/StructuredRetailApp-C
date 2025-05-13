@@ -32,8 +32,8 @@ Producto* cargarProductosDesdeArchivo(const char* nombreArchivo) {
         Producto* nuevo = (Producto*)malloc(sizeof(Producto)); // Reservamos memoria para un nuevo nodo de producto
         if (nuevo == NULL) { // Si no se pudo reservar memoria
             printf("Error de memoria.\n");
-            fclose(f);
-            return NULL;
+            fclose(f); // fclose cierra el archivo abierto
+            return NULL; // retorna NULL para indicar que no se pudo cargar la lista
         }
 
         // Asignar valores a los campos del nuevo producto
@@ -67,6 +67,8 @@ void mostrarProductoActual(Producto* actual) {
     if (actual != NULL) {
         // Mostrar el nombre del producto
         printf("Producto: %s\n", actual->nombre);
+        
+        // Mostrar el costo del producto
         printf("Costo: $%.2f\n", actual->costo);
         printf("Cantidad: %d\n", actual->cantidad);
         printf("Categoría: %s\n", actual->categoria);
