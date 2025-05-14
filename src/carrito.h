@@ -12,5 +12,7 @@ void actualizarTotal(Usuario* usuario);
 
 void agregarProductoAlCarrito(Usuario* usuario, Producto* producto);
 
+void eliminarProductoDelCarrito(Usuario* usuario);
+
 
 #endif

@@ -11,7 +11,8 @@ void mostrarMenu() {
     printf("1. Navegar por la lista de productos\n");
     printf("2. Ver información del usuario\n");
     printf("3. Ver carrito de compras\n");
-    printf("4. Salir\n");
+    printf("4. Eliminar producto del carrito\n");
+    printf("5. Salir\n");
     printf("Elige una opción: ");
 }
 
@@ -33,7 +34,6 @@ int main() {
 
     Producto* actual = listaProductos; // Inicializamos 'actual' como el primer producto de la lista
     int opcion;
-    Producto* actual = listaProductos;  // Empezamos desde el primer producto
     int seguir = 1;
 
     while (seguir) {
@@ -125,6 +125,11 @@ int main() {
             }
 
             case 4: {
+                eliminarProductoDelCarrito(&usuario1);
+                break;
+            }
+
+            case 5: {
                 // Salir
                 seguir = 0;
                 printf("Saliendo del programa...\n");

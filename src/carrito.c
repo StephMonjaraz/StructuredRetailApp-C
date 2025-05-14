@@ -77,3 +77,49 @@ void agregarProductoAlCarrito(Usuario* usuario, Producto* producto) {
     // Actualizar el total
     actualizarTotal(usuario);
 }
+
+void eliminarProductoDelCarrito(Usuario* usuario) {
+    if (usuario->carrito == NULL) {
+        printf("El carrito está vacío. No hay productos para eliminar.\n");
+        return;
+    }
+
+    printf("\nProductos en tu carrito:\n");
+    Producto* temp = usuario->carrito;
+    int index = 1;
+
+    while (temp != NULL) {
+        printf("%d. %s (Cantidad: %d, Precio: $%.2f)\n", index, temp->nombre, temp->cantidad, temp->costo);
+        temp = temp->siguiente;
+        index++;
+    }
+
+    int opcion;
+    printf("Selecciona el número del producto que deseas eliminar: ");
+    if (scanf("%d", &opcion) != 1 || opcion <= 0 || opcion >= index) {
+        printf("Opción no válida.\n");
+        while (getchar() != '\n'); // Limpiar el buffer
+        return;
+    }
+
+    Producto* actual = usuario->carrito;
+    Producto* anterior = NULL;
+    int contador = 1;
+
+    while (actual != NULL) {
+        if (contador == opcion) {
+            if (anterior == NULL) {
+                usuario->carrito = actual->siguiente;
+            } else {
+                anterior->siguiente = actual->siguiente;
+            }
+            printf("Producto '%s' eliminado del carrito.\n", actual->nombre);
+            free(actual);
+            actualizarTotal(usuario);
+            return;
+        }
+        anterior = actual;
+        actual = actual->siguiente;
+        contador++;
+    }
+}
