@@ -2,17 +2,27 @@
 #define CARRITO_H
 
 #include "producto.h"  // Necesario para la estructura Producto
-#include "usuario.h"    // necesario para la estructura USuario
+
+struct Usuario; // Declaración adelantada para usar struct Usuario*
+
+typedef struct Carrito {
+    Producto producto;             // El producto agregado al carrito
+    int cantidad;                  // Cantidad de ese producto
+    struct Carrito* siguiente;     // Apuntador al siguiente nodo
+} Carrito;
 
 // Función para mostrar el carrito de compras
-void mostrarCarrito(const Usuario* usuario);
+void mostrarCarrito(const struct Usuario* usuario);
 
 // Función para calcular el total a pagar
-void actualizarTotal(Usuario* usuario);
+void actualizarTotal(struct Usuario* usuario);
 
-void agregarProductoAlCarrito(Usuario* usuario, Producto* producto);
+// Función para agregar un producto al carrito
+void agregarProductoAlCarrito(struct Usuario* usuario, Producto* producto);
 
-void eliminarProductoDelCarrito(Usuario* usuario);
+// Función para eliminar un producto del carrito
+void eliminarProductoDelCarrito(struct Usuario* usuario);
 
+void eliminarProductoDelCarritoPorNumero(struct Usuario* usuario, int numero);
 
 #endif

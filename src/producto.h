@@ -2,13 +2,13 @@
 #define PRODUCTO_H
 
 typedef struct Producto {
-    char nombre[100];          // Nombre del producto
-    float costo;               // Precio del producto
-    char descripcion[200];     // Descripción breve del producto
-    int cantidad;              // Cantidad disponible en el inventario
-    char categoria[50];        // Categoría del producto (ej. "Computadora")
-    char marca[50];            // Marca del producto (ej. "Apple")
-    float voltaje;             // Voltaje del producto (si aplica, ej. "220V")
+    char nombre[100]; // Nombre del producto
+    float costo;  // Precio del producto
+    char descripcion[200];  // Descripción breve del producto
+    int cantidad;  // Cantidad disponible en el inventario
+    char categoria[50]; // Categoría del producto (ej. "Computadora")
+    char marca[50]; // Marca del producto (ej. "Apple")
+    float voltaje;  // Voltaje del producto (si aplica, ej. "220V")
     char caracteristicas[200]; // Características adicionales del producto
     struct Producto* siguiente; // Apuntador al siguiente producto
 } Producto;
@@ -61,5 +61,7 @@ Producto* retrocederProducto(Producto* cabeza, Producto* actual);
 
 Producto* copiarProducto(Producto* original);
 
+
+void mostrarMenuNavegacionProductos();
 
 #endif

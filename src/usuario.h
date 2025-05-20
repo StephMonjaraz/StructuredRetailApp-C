@@ -7,7 +7,7 @@ typedef struct Usuario {
     char nombre[100];
     char numeroCelular[10];  
     float totalPagar;
-    Producto* carrito;       // apuntador al inicio del carrito de compras (lista ligada)
+    struct Carrito* carrito;       // ahora es un apuntador a la estructura Carrito
 } Usuario;
 
 // Declaraciones de funciones
